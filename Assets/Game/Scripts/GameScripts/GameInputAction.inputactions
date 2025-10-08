@@ -1,0 +1,95 @@
+{
+    "version": 1,
+    "name": "GameInputAction",
+    "maps": [
+        {
+            "name": "GameKey",
+            "id": "d7ca974c-50e8-417a-b282-1449088fac2c",
+            "actions": [
+                {
+                    "name": "KKey",
+                    "type": "Button",
+                    "id": "e831cead-dff7-4976-982b-a8422ce14ac3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "JKey",
+                    "type": "Button",
+                    "id": "7ea2868b-7ac8-4fc7-8e48-e498d1c7e878",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "FKey",
+                    "type": "Button",
+                    "id": "f7024f5c-1a2b-4770-bc0f-0d5ee96ddd75",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DKey",
+                    "type": "Button",
+                    "id": "c6fc1688-4aef-4ec8-a5b1-30bf549abcd1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "28dab9db-5732-458f-a649-a04b6e22537b",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "KKey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4fc68746-9de7-4dee-8816-e6cc58cadb9d",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "JKey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bd07f55c-b2ab-4e94-bf05-19add29c7b3e",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "FKey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f3ba9fe2-87d1-4d7b-b019-8a13a7b63b2f",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DKey",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
