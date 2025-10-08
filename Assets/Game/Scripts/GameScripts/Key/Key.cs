@@ -10,10 +10,6 @@ public class Key : MonoBehaviour
         KeyInput.Instance.OnNoteCancel += KeyInput_OnNoteCancel;
     }
 
-    private void Update()
-    {
-        Debug.DrawLine(new Vector3(transform.position.x, transform.position.y, transform.position.z - 1), new Vector3(transform.position.x, transform.position.y, transform.position.z + 2.5f), Color.red);
-    }
 
 
     private void KeyInput_OnNoteCancel(object sender, KeyInput.NoteEventArgs e)
@@ -35,11 +31,13 @@ public class Key : MonoBehaviour
 
     private void CheckNote()
     {
+        float distanceFromNote = 10f;
         if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 3f))
         {
             if (hit.transform.GetComponentInParent<Note>())
             {
                 Note note = hit.transform.GetComponentInParent<Note>();
+                distanceFromNote = Vector3.Distance(note.transform.localPosition, transform.position);
                 note.DestroyNote();
             }
         }

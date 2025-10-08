@@ -4,10 +4,10 @@ public class NoteManager : MonoBehaviour
 {
     [SerializeField] private GameObject notePrefab;
 
-    private Vector3 dLaneSpawnPosition = new Vector3(-1.5f, 0, 0);
-    private Vector3 fLaneSpawnPosition = new Vector3(-0.5f, 0, 0);
-    private Vector3 jLaneSpawnPosition = new Vector3(0.5f, 0, 0);
-    private Vector3 kLaneSpawnPosition = new Vector3(1.5f, 0, 0);
+    private Vector3 dLaneSpawnPosition = new Vector3(-1.5f, 0, 16);
+    private Vector3 fLaneSpawnPosition = new Vector3(-0.5f, 0, 16);
+    private Vector3 jLaneSpawnPosition = new Vector3(0.5f, 0, 16);
+    private Vector3 kLaneSpawnPosition = new Vector3(1.5f, 0, 16);
 
     private void Update()
     {
