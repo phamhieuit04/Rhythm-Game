@@ -16,6 +16,8 @@ public class NoteManager : MonoBehaviour
     private Vector3 jLaneSpawnPosition = new Vector3(0.5f, 0, 16);
     private Vector3 kLaneSpawnPosition = new Vector3(1.5f, 0, 16);
 
+    private RootNote beatRoot;
+
     private void Start()
     {
         audioSource.PlayScheduled(AudioSettings.dspTime + 5);
@@ -25,6 +27,17 @@ public class NoteManager : MonoBehaviour
             note.SetActive(false);
             notePool.Add(note);
         }
+
+
+
+        TextAsset jsonFile = Resources.Load<TextAsset>("Ttls");
+        Debug.Log(jsonFile.text);
+        beatRoot = JsonUtility.FromJson<RootNote>(jsonFile.text);
+        foreach (Beat beat in beatRoot.beats)
+        {
+            Debug.Log(beat.time);
+        }
+
     }
 
     private void Update()
@@ -68,7 +81,7 @@ public class NoteManager : MonoBehaviour
 
     public GameObject GetNotePool()
     {
-        for(int i = 0; i < notePool.Count; i++)
+        for (int i = 0; i < notePool.Count; i++)
         {
             if (!notePool[i].activeInHierarchy)
             {
@@ -82,17 +95,16 @@ public class NoteManager : MonoBehaviour
     }
 }
 
-
+[System.Serializable]
 public class Beat
 {
     public double time;
     public int lane;
     public string type;
     public double energy;
-    public double? duration;
 }
-
-public class Root
+[System.Serializable]
+public class RootNote
 {
     public string difficulty;
     public List<Beat> beats;
