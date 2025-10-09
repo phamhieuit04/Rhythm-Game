@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Note : MonoBehaviour
 {
-    [SerializeField] private float noteSpeed = 1f;
+    [SerializeField] private float noteSpeed = 2f;
     void Update()
     {
         transform.Translate(Vector3.back * noteSpeed * Time.deltaTime);

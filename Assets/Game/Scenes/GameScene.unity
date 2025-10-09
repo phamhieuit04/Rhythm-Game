@@ -292,6 +292,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NoteManager
   notePrefab: {fileID: 4809287376798471361, guid: c7ea918068455e64eb4e765dd7b4a53e, type: 3}
   randomNote: 1
+  audioSource: {fileID: 1896325534}
 --- !u!1 &462723679
 GameObject:
   m_ObjectHideFlags: 0
@@ -1377,8 +1378,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_Resource: {fileID: 8300000, guid: 672442e143143054caa801d1a39ad84a, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

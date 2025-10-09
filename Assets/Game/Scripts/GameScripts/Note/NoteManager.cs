@@ -5,6 +5,9 @@ public class NoteManager : MonoBehaviour
 {
     [SerializeField] private GameObject notePrefab;
     [SerializeField] private bool randomNote = false;
+
+    [SerializeField] private AudioSource audioSource;
+
     private List<GameObject> notePool = new List<GameObject>();
     private float noteReleaseTimer = 0f;
 
@@ -15,6 +18,7 @@ public class NoteManager : MonoBehaviour
 
     private void Start()
     {
+        audioSource.PlayScheduled(AudioSettings.dspTime + 5);
         for (int i = 0; i < 40; i++)
         {
             GameObject note = Instantiate(notePrefab, transform);
@@ -23,18 +27,15 @@ public class NoteManager : MonoBehaviour
         }
     }
 
-
-
     private void Update()
     {
-
         if (randomNote)
         {
             noteReleaseTimer -= Time.deltaTime;
             if (noteReleaseTimer < 0)
             {
                 RandomNotes();
-                noteReleaseTimer = 0.3f;
+                noteReleaseTimer = 0.5f;
             }
         }
     }
@@ -79,4 +80,20 @@ public class NoteManager : MonoBehaviour
         notePool.Add(newNote);
         return newNote;
     }
+}
+
+
+public class Beat
+{
+    public double time;
+    public int lane;
+    public string type;
+    public double energy;
+    public double? duration;
+}
+
+public class Root
+{
+    public string difficulty;
+    public List<Beat> beats;
 }
