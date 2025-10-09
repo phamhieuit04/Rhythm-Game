@@ -5,6 +5,8 @@ public class CameraRotate : MonoBehaviour
     public static CameraRotate Instance { get; private set; }
 
     [SerializeField] private float rotateSpeed = 150f;
+    [SerializeField] private float minRange = -10f;
+    [SerializeField] private float maxRange = 40f;
     private float rotationX = 0f;
     private float rotationY = 0f;
 
@@ -28,7 +30,7 @@ public class CameraRotate : MonoBehaviour
 
         rotationY += mouseDelta.x;
         rotationX -= mouseDelta.y;
-        rotationX = Mathf.Clamp(rotationX, -10f, 40f);
+        rotationX = Mathf.Clamp(rotationX, minRange, maxRange);
 
         Transform followPoint = PlayerLocomotion.Instance.GetFollowPoint();
         followPoint.rotation = Quaternion.Euler(rotationX, rotationY, 0f);
