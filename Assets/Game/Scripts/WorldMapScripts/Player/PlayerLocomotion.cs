@@ -4,11 +4,15 @@ public class PlayerLocomotion : MonoBehaviour
 {
     public static PlayerLocomotion Instance { get; private set; }
 
+    private const string IS_WALKING = "IsWalking";
+
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private Transform followPoint;
     [SerializeField] private float rotateSpeed = 5f;
     private Vector3 moveDir { get; set; }
     public new Rigidbody rigidbody { get; private set; }
+    private bool isWalking { get; set; }
+    private Animator animator;
 
     private void Awake()
     {
@@ -18,6 +22,7 @@ public class PlayerLocomotion : MonoBehaviour
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -43,6 +48,9 @@ public class PlayerLocomotion : MonoBehaviour
 
         moveDir = (cameraForward * inputDir.z + cameraRight * inputDir.x) * moveSpeed;
         rigidbody.linearVelocity = moveDir;
+
+        isWalking = moveDir != Vector3.zero;
+        animator.SetBool(IS_WALKING, isWalking);
     }
 
     public Transform GetFollowPoint()
