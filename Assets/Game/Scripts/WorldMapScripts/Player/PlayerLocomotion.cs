@@ -3,17 +3,17 @@ using UnityEngine;
 public class PlayerLocomotion : MonoBehaviour
 {
     public static PlayerLocomotion Instance { get; private set; }
+
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float playerHeight = 2f;
     [SerializeField] private float playerRadius = 0.5f;
     [SerializeField] private float maxDistance = 0.25f;
-    private float deltaTime;
+    [SerializeField] private Transform followPoint;
+    [SerializeField] private float rotateSpeed = 5f;
 
     private void Awake()
     {
         Instance = this;
-
-        deltaTime = Time.deltaTime;
     }
 
     void Start()
@@ -28,37 +28,33 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void HandleMovement()
     {
-        Vector2 gameInput = GameInput.Instance.GetMovementInput();
-        Vector3 moveDir = new Vector3(gameInput.x, 0f, gameInput.y).normalized;
+        Vector2 gameInput = GameInput.Instance.GetMovementInput().normalized;
+        Vector3 inputDir = new Vector3(gameInput.x, 0f, gameInput.y);
+
+        Vector3 cameraForward = followPoint.forward;
+        Vector3 cameraRight = followPoint.right;
+
+        cameraForward.y = 0f;
+        cameraRight.y = 0f;
+
+        Vector3 moveDir = (cameraForward * inputDir.z + cameraRight * inputDir.x).normalized * moveSpeed;
 
         bool canMove = GetCanMove(moveDir);
-
         if (canMove)
         {
-            transform.position += deltaTime * moveSpeed * moveDir;
+            transform.position += Time.deltaTime * moveSpeed * moveDir;
         }
-        else
-        {
-            Vector3 moveX = new Vector3(gameInput.x, 0f, 0f);
-            canMove = GetCanMove(moveX);
-            if (canMove)
-            {
-                transform.position += deltaTime * moveSpeed * moveX;
-            }
-            else
-            {
-                Vector3 moveZ = new Vector3(0f, 0f, gameInput.y);
-                canMove = GetCanMove(moveZ);
-                if (canMove)
-                {
-                    transform.position += deltaTime * moveSpeed * moveZ;
-                }
-            }
-        }
+
+        transform.forward = Vector3.Slerp(transform.forward, moveDir, rotateSpeed * Time.deltaTime);
     }
 
     public bool GetCanMove(Vector3 moveDir)
     {
         return !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadius, moveDir, maxDistance);
+    }
+
+    public Transform GetFollowPoint()
+    {
+        return followPoint;
     }
 }

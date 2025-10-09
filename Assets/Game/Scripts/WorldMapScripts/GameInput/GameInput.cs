@@ -27,4 +27,9 @@ public class GameInput : MonoBehaviour
     {
         return inputActions.Player.Move.ReadValue<Vector2>();
     }
+
+    public Vector2 GetMouseInput()
+    {
+        return inputActions.Player.Look.ReadValue<Vector2>();
+    }
 }
