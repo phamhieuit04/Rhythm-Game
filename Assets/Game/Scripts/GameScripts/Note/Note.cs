@@ -8,8 +8,8 @@ public class Note : MonoBehaviour
         transform.Translate(Vector3.back * noteSpeed * Time.deltaTime);
         if (transform.position.z < -8)
         {
-            DestroyNote(); 
-            Debug.Log("Miss");
+            DestroyNote();
+            InGameUI.Instance.SetInGameText("Miss");
         }
     }
     public void DestroyNote()

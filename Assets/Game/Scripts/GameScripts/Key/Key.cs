@@ -40,14 +40,15 @@ public class Key : MonoBehaviour
             }
             if(hit.transform.position.z < transform.position.z)
             {
-                Debug.Log("Bed");
+                InGameUI.Instance.SetInGameText("Bed");
             }
             else if(distanceFromNote < 0.35f)
             {
-                Debug.Log("Perfect");
-            } else
+                InGameUI.Instance.SetInGameText("Perfect");
+            }
+            else
             {
-                Debug.Log("Normal");
+                InGameUI.Instance.SetInGameText("Good");
             }
         }
     }
