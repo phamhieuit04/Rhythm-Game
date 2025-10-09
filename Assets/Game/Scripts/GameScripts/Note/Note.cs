@@ -6,10 +6,14 @@ public class Note : MonoBehaviour
     void Update()
     {
         transform.Translate(Vector3.back * noteSpeed * Time.deltaTime);
-        if (transform.position.z < -30) DestroyNote();
+        if (transform.position.z < -8)
+        {
+            DestroyNote(); 
+            Debug.Log("Miss");
+        }
     }
     public void DestroyNote()
     {
-        Destroy(this.gameObject);
+        gameObject.SetActive(false);
     }
 }

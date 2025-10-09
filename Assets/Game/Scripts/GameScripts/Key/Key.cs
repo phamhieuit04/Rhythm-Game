@@ -10,8 +10,6 @@ public class Key : MonoBehaviour
         KeyInput.Instance.OnNoteCancel += KeyInput_OnNoteCancel;
     }
 
-
-
     private void KeyInput_OnNoteCancel(object sender, KeyInput.NoteEventArgs e)
     {
         if (e.key == keyNote)
@@ -32,13 +30,24 @@ public class Key : MonoBehaviour
     private void CheckNote()
     {
         float distanceFromNote = 10f;
-        if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 3f))
+        if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z - 1.5f), transform.forward, out RaycastHit hit, 3f))
         {
             if (hit.transform.GetComponentInParent<Note>())
             {
                 Note note = hit.transform.GetComponentInParent<Note>();
                 distanceFromNote = Vector3.Distance(note.transform.localPosition, transform.position);
                 note.DestroyNote();
+            }
+            if(hit.transform.position.z < transform.position.z)
+            {
+                Debug.Log("Bed");
+            }
+            else if(distanceFromNote < 0.35f)
+            {
+                Debug.Log("Perfect");
+            } else
+            {
+                Debug.Log("Normal");
             }
         }
     }

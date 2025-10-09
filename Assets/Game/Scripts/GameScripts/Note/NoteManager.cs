@@ -1,35 +1,82 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class NoteManager : MonoBehaviour
 {
     [SerializeField] private GameObject notePrefab;
+    [SerializeField] private bool randomNote = false;
+    private List<GameObject> notePool = new List<GameObject>();
+    private float noteReleaseTimer = 0f;
 
     private Vector3 dLaneSpawnPosition = new Vector3(-1.5f, 0, 16);
     private Vector3 fLaneSpawnPosition = new Vector3(-0.5f, 0, 16);
     private Vector3 jLaneSpawnPosition = new Vector3(0.5f, 0, 16);
     private Vector3 kLaneSpawnPosition = new Vector3(1.5f, 0, 16);
 
+    private void Start()
+    {
+        for (int i = 0; i < 40; i++)
+        {
+            GameObject note = Instantiate(notePrefab, transform);
+            note.SetActive(false);
+            notePool.Add(note);
+        }
+    }
+
+
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+
+        if (randomNote)
         {
-            GameObject dNote = Instantiate(notePrefab, transform);
-            dNote.transform.position = dLaneSpawnPosition;
+            noteReleaseTimer -= Time.deltaTime;
+            if (noteReleaseTimer < 0)
+            {
+                RandomNotes();
+                noteReleaseTimer = 0.3f;
+            }
         }
-        if (Input.GetKeyDown(KeyCode.R))
+    }
+
+    private void RandomNotes()
+    {
+        int lane = Random.Range(1, 5);
+        switch (lane)
         {
-            GameObject fNote = Instantiate(notePrefab, transform);
-            fNote.transform.position = fLaneSpawnPosition;
+            case 1:
+                SetupNote(GetNotePool(), dLaneSpawnPosition);
+                break;
+            case 2:
+                SetupNote(GetNotePool(), fLaneSpawnPosition);
+                break;
+            case 3:
+                SetupNote(GetNotePool(), jLaneSpawnPosition);
+                break;
+            case 4:
+                SetupNote(GetNotePool(), kLaneSpawnPosition);
+                break;
         }
-        if (Input.GetKeyDown(KeyCode.U))
+    }
+
+    public void SetupNote(GameObject note, Vector3 lane)
+    {
+        note.SetActive(true);
+        note.transform.position = lane;
+    }
+
+    public GameObject GetNotePool()
+    {
+        for(int i = 0; i < notePool.Count; i++)
         {
-            GameObject jNote = Instantiate(notePrefab, transform);
-            jNote.transform.position = jLaneSpawnPosition;
+            if (!notePool[i].activeInHierarchy)
+            {
+                return notePool[i];
+            }
         }
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            GameObject kNote = Instantiate(notePrefab, transform);
-            kNote.transform.position = kLaneSpawnPosition;
-        }
+        GameObject newNote = Instantiate(notePrefab, transform);
+        newNote.SetActive(false);
+        notePool.Add(newNote);
+        return newNote;
     }
 }
