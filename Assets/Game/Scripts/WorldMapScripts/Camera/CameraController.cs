@@ -69,14 +69,8 @@ public class CameraController : MonoBehaviour
     public void HandleChangeCameraSide()
     {
         float currentSide = thirdPersonCamera.CameraSide;
-        if (isChangeCameraSide)
-        {
-            thirdPersonCamera.CameraSide = Mathf.Lerp(currentSide, 0.1f, Time.deltaTime * changeCameraSideSpeed);
-        }
-        else
-        {
-            thirdPersonCamera.CameraSide = Mathf.Lerp(currentSide, 1f, Time.deltaTime * changeCameraSideSpeed);
-        }
+        float targetSide = isChangeCameraSide ? 0.5f : 1f;
+        thirdPersonCamera.CameraSide = thirdPersonCamera.CameraSide = Mathf.Lerp(currentSide, targetSide, Time.deltaTime * changeCameraSideSpeed);
     }
 
     private void GameInput_OnChangeCameraSide(object sender, System.EventArgs e)
