@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class NoteManager : MonoBehaviour
 {
+    public static NoteManager Instance { get; private set; }
+
     [Header("Property")]
     [SerializeField] private GameObject notePrefab;
-    [SerializeField] private AudioSource audioSource;
 
     private List<GameObject> notePool = new List<GameObject>();
 
@@ -14,20 +15,16 @@ public class NoteManager : MonoBehaviour
     private Vector3 jLaneSpawnPosition = new Vector3(0.5f, 0, 16);
     private Vector3 kLaneSpawnPosition = new Vector3(1.5f, 0, 16);
 
-    private RootNote beatRoot;
     private List<Beat> beats;
 
-
     [SerializeField] private float noteSpeed = 3f;
-    [SerializeField] private double audioStartDelay = 10f;
 
-    private double songStartDspTime;
     private double travelTime;
     private int nextNoteIndex = 0;
 
     private void Awake()
     {
-        GameManager.Instance.OnGameStart += GameManager_OnGameStart;
+        Instance = this;
     }
 
     private void Start()
@@ -38,21 +35,14 @@ public class NoteManager : MonoBehaviour
             note.SetActive(false);
             notePool.Add(note);
         }
+        GameManager.Instance.OnGameStart += GameManager_OnGameStart;
     }
 
     private void GameManager_OnGameStart(object sender, GameManager.OnGameStartEventArgs e)
     {
-        Debug.Log("GameStart");
-        Debug.Log(e.json.text);
-        beatRoot = JsonUtility.FromJson<RootNote>(e.json.text);
-        beats = beatRoot.beats;
-
+        beats = e.beats;
         float distance = Vector3.Distance(dLaneSpawnPosition, new Vector3(dLaneSpawnPosition.x, dLaneSpawnPosition.y, -7.5f));
         travelTime = distance / noteSpeed;
-
-        songStartDspTime = AudioSettings.dspTime + audioStartDelay;
-        audioSource.resource = e.audio;
-        audioSource.PlayScheduled(songStartDspTime);
     }
 
     private void Update()
@@ -65,7 +55,7 @@ public class NoteManager : MonoBehaviour
 
     private void HandleNoteSpawn()
     {
-        double songPosition = AudioSettings.dspTime - songStartDspTime;
+        double songPosition = AudioSettings.dspTime - GameManager.Instance.GetSongStartDsp();
 
         if (nextNoteIndex < beats.Count &&
             songPosition >= beats[nextNoteIndex].time - travelTime)
@@ -73,16 +63,16 @@ public class NoteManager : MonoBehaviour
             switch (beats[nextNoteIndex].lane)
             {
                 case 1:
-                    GetNotePool().GetComponent<Note>().SpawnNote(dLaneSpawnPosition, songStartDspTime + beats[nextNoteIndex].time, noteSpeed);
+                    GetNotePool().GetComponent<Note>().SpawnNote(dLaneSpawnPosition, GameManager.Instance.GetSongStartDsp() + beats[nextNoteIndex].time, noteSpeed);
                     break;
                 case 2:
-                    GetNotePool().GetComponent<Note>().SpawnNote(fLaneSpawnPosition, songStartDspTime + beats[nextNoteIndex].time, noteSpeed);
+                    GetNotePool().GetComponent<Note>().SpawnNote(fLaneSpawnPosition, GameManager.Instance.GetSongStartDsp() + beats[nextNoteIndex].time, noteSpeed);
                     break;
                 case 3:
-                    GetNotePool().GetComponent<Note>().SpawnNote(jLaneSpawnPosition, songStartDspTime + beats[nextNoteIndex].time, noteSpeed);
+                    GetNotePool().GetComponent<Note>().SpawnNote(jLaneSpawnPosition, GameManager.Instance.GetSongStartDsp() + beats[nextNoteIndex].time, noteSpeed);
                     break;
                 case 4:
-                    GetNotePool().GetComponent<Note>().SpawnNote(kLaneSpawnPosition, songStartDspTime + beats[nextNoteIndex].time, noteSpeed);
+                    GetNotePool().GetComponent<Note>().SpawnNote(kLaneSpawnPosition, GameManager.Instance.GetSongStartDsp() + beats[nextNoteIndex].time, noteSpeed);
                     break;
             }
             nextNoteIndex++;
@@ -103,19 +93,11 @@ public class NoteManager : MonoBehaviour
         notePool.Add(newNote);
         return newNote;
     }
+
+    public void SetNoteSpeed(float speed)
+    {
+        noteSpeed = speed;
+    }
 }
 
-[System.Serializable]
-public class Beat
-{
-    public double time;
-    public int lane;
-    public string type;
-    public double energy;
-}
-[System.Serializable]
-public class RootNote
-{
-    public string difficulty;
-    public List<Beat> beats;
-}
+

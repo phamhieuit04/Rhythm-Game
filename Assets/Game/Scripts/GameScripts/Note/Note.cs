@@ -50,7 +50,7 @@ public class Note : MonoBehaviour
     public void DestroyNote()
     {
         float distanceFromKey = transform.position.z - -7.5f;
-        if (transform.position.z <= -7.5f)
+        if (transform.position.z <= -7.77f)
         {
             InGameUI.Instance.SetInGameText("Bed");
         }
