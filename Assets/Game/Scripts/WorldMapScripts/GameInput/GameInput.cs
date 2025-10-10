@@ -7,6 +7,7 @@ public class GameInput : MonoBehaviour
     private PlayerInputActions inputActions;
     public event EventHandler OnChangeCameraSide;
     public event EventHandler OnZoomCamera;
+    public event EventHandler OnInteract;
 
     private void Awake()
     {
@@ -16,6 +17,12 @@ public class GameInput : MonoBehaviour
         inputActions.Player.Enable();
         inputActions.Player.ChangeCameraSide.performed += ChangeCameraSide_Performed;
         inputActions.Player.ZoomCamera.performed += ZoomCamera_Performed;
+        inputActions.Player.Interact.performed += Interact_Performed;
+    }
+
+    private void Interact_Performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        OnInteract?.Invoke(this, EventArgs.Empty);
     }
 
     void Start()
@@ -38,9 +45,9 @@ public class GameInput : MonoBehaviour
         OnZoomCamera?.Invoke(this, EventArgs.Empty);
     }
 
-    public Vector2 GetMovementInput()
+    public Vector2 GetMovementInputNormalized()
     {
-        return inputActions.Player.Move.ReadValue<Vector2>();
+        return inputActions.Player.Move.ReadValue<Vector2>().normalized;
     }
 
     public Vector2 GetMouseInput()

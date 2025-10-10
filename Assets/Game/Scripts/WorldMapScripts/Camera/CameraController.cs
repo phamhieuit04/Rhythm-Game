@@ -21,10 +21,13 @@ public class CameraController : MonoBehaviour
     private Vector2 mouseScrollInput;
     private float targetZoom;
 
-    void Start()
+    private void Awake()
     {
         Instance = this;
+    }
 
+    void Start()
+    {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 

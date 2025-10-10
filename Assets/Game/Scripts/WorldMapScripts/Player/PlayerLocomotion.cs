@@ -27,7 +27,10 @@ public class PlayerLocomotion : MonoBehaviour
 
     void Update()
     {
-        transform.forward = Vector3.Slerp(transform.forward, moveDir, rotateSpeed * Time.deltaTime);
+        if (moveDir != Vector3.zero)
+        {
+            transform.forward = Vector3.Slerp(transform.forward, moveDir, rotateSpeed * Time.deltaTime);
+        }
     }
 
     private void FixedUpdate()
@@ -37,16 +40,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void HandleMovement()
     {
-        Vector2 gameInput = GameInput.Instance.GetMovementInput().normalized;
-        Vector3 inputDir = new Vector3(gameInput.x, 0f, gameInput.y);
-
-        Vector3 cameraForward = followPoint.forward;
-        Vector3 cameraRight = followPoint.right;
-
-        cameraForward.y = 0f;
-        cameraRight.y = 0f;
-
-        moveDir = (cameraForward * inputDir.z + cameraRight * inputDir.x) * moveSpeed;
+        moveDir = GetCameraMovementDirection();
         rigidbody.linearVelocity = moveDir;
 
         isWalking = moveDir != Vector3.zero;
@@ -56,5 +50,19 @@ public class PlayerLocomotion : MonoBehaviour
     public Transform GetFollowPoint()
     {
         return followPoint;
+    }
+
+    public Vector3 GetCameraMovementDirection()
+    {
+        Vector2 gameInput = GameInput.Instance.GetMovementInputNormalized();
+        Vector3 inputDir = new Vector3(gameInput.x, 0f, gameInput.y);
+
+        Vector3 cameraForward = followPoint.forward;
+        Vector3 cameraRight = followPoint.right;
+
+        cameraForward.y = 0f;
+        cameraRight.y = 0f;
+
+        return (cameraForward * inputDir.z + cameraRight * inputDir.x) * moveSpeed;
     }
 }
