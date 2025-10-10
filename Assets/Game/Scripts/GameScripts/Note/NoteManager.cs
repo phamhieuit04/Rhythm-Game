@@ -1,11 +1,23 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class NoteManager : MonoBehaviour
 {
+
+    [Header("Debug File")]
+    [SerializeField] private TextAsset jsonFile;
+    [SerializeField] private AudioResource audioResource;
+
+
+
+    [Header("Property")]
     [SerializeField] private GameObject notePrefab;
 
     [SerializeField] private AudioSource audioSource;
+
+
+
 
     private List<GameObject> notePool = new List<GameObject>();
 
@@ -39,7 +51,7 @@ public class NoteManager : MonoBehaviour
 
 
 
-        TextAsset jsonFile = Resources.Load<TextAsset>("TtlsH");
+        //TextAsset jsonFile = Resources.Load<TextAsset>("TtlsH");
         Debug.Log(jsonFile.text);
         beatRoot = JsonUtility.FromJson<RootNote>(jsonFile.text);
         beats = beatRoot.beats;
@@ -50,6 +62,7 @@ public class NoteManager : MonoBehaviour
         travelTime = distance / noteSpeed;
 
         songStartDspTime = AudioSettings.dspTime + audioStartDelay;
+        audioSource.resource = audioResource;
         audioSource.PlayScheduled(songStartDspTime);
     }
 
