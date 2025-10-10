@@ -1,23 +1,11 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Audio;
 
 public class NoteManager : MonoBehaviour
 {
-
-    [Header("Debug File")]
-    [SerializeField] private TextAsset jsonFile;
-    [SerializeField] private AudioResource audioResource;
-
-
-
     [Header("Property")]
     [SerializeField] private GameObject notePrefab;
-
     [SerializeField] private AudioSource audioSource;
-
-
-
 
     private List<GameObject> notePool = new List<GameObject>();
 
@@ -37,8 +25,10 @@ public class NoteManager : MonoBehaviour
     private double travelTime;
     private int nextNoteIndex = 0;
 
-
-
+    private void Awake()
+    {
+        GameManager.Instance.OnGameStart += GameManager_OnGameStart;
+    }
 
     private void Start()
     {
@@ -48,25 +38,32 @@ public class NoteManager : MonoBehaviour
             note.SetActive(false);
             notePool.Add(note);
         }
+    }
 
-
-
-        //TextAsset jsonFile = Resources.Load<TextAsset>("TtlsH");
-        Debug.Log(jsonFile.text);
-        beatRoot = JsonUtility.FromJson<RootNote>(jsonFile.text);
+    private void GameManager_OnGameStart(object sender, GameManager.OnGameStartEventArgs e)
+    {
+        Debug.Log("GameStart");
+        Debug.Log(e.json.text);
+        beatRoot = JsonUtility.FromJson<RootNote>(e.json.text);
         beats = beatRoot.beats;
-
-
 
         float distance = Vector3.Distance(dLaneSpawnPosition, new Vector3(dLaneSpawnPosition.x, dLaneSpawnPosition.y, -7.5f));
         travelTime = distance / noteSpeed;
 
         songStartDspTime = AudioSettings.dspTime + audioStartDelay;
-        audioSource.resource = audioResource;
+        audioSource.resource = e.audio;
         audioSource.PlayScheduled(songStartDspTime);
     }
 
     private void Update()
+    {
+        if (GameManager.Instance.GetIsPlaying())
+        {
+            HandleNoteSpawn();
+        }
+    }
+
+    private void HandleNoteSpawn()
     {
         double songPosition = AudioSettings.dspTime - songStartDspTime;
 

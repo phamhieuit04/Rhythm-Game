@@ -7,23 +7,14 @@ public class KeyInput : MonoBehaviour
 
     private GameInputAction gameInputAction;
 
-    [SerializeField] private GameObject KKey;
-    [SerializeField] private GameObject JKey;
-    [SerializeField] private GameObject FKey;
-    [SerializeField] private GameObject DKey;
-
     public event EventHandler<NoteEventArgs> OnNotePerform;
     public event EventHandler<NoteEventArgs> OnNoteCancel;
 
     public class NoteEventArgs : EventArgs
     {
-        public KeyNote key;
+        public KeyManager.KeyNote key;
     }
 
-    public enum KeyNote
-    {
-        K, J, F, D,
-    }
 
     private void Awake()
     {
@@ -46,41 +37,41 @@ public class KeyInput : MonoBehaviour
 
     private void DKey_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        OnNoteCancel?.Invoke(this, new NoteEventArgs { key = KeyNote.D });
+        OnNoteCancel?.Invoke(this, new NoteEventArgs { key = KeyManager.KeyNote.D });
     }
 
     private void DKey_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        OnNotePerform?.Invoke(this, new NoteEventArgs { key = KeyNote.D });
+        OnNotePerform?.Invoke(this, new NoteEventArgs { key = KeyManager.KeyNote.D });
     }
 
     private void FKey_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        OnNoteCancel?.Invoke(this, new NoteEventArgs { key = KeyNote.F });
+        OnNoteCancel?.Invoke(this, new NoteEventArgs { key = KeyManager.KeyNote.F });
     }
 
     private void FKey_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        OnNotePerform?.Invoke(this, new NoteEventArgs { key = KeyNote.F });
+        OnNotePerform?.Invoke(this, new NoteEventArgs { key = KeyManager.KeyNote.F });
     }
 
     private void JKey_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        OnNoteCancel?.Invoke(this, new NoteEventArgs { key = KeyNote.J });
+        OnNoteCancel?.Invoke(this, new NoteEventArgs { key = KeyManager.KeyNote.J });
     }
 
     private void JKey_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        OnNotePerform?.Invoke(this, new NoteEventArgs { key = KeyNote.J });
+        OnNotePerform?.Invoke(this, new NoteEventArgs { key = KeyManager.KeyNote.J });
     }
 
     private void KKey_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        OnNoteCancel?.Invoke(this, new NoteEventArgs { key = KeyNote.K });
+        OnNoteCancel?.Invoke(this, new NoteEventArgs { key = KeyManager.KeyNote.K });
     }
 
     private void KKey_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        OnNotePerform?.Invoke(this, new NoteEventArgs { key = KeyNote.K });
+        OnNotePerform?.Invoke(this, new NoteEventArgs { key = KeyManager.KeyNote.K });
     }
 }

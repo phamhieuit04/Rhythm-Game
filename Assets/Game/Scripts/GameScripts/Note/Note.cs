@@ -23,7 +23,7 @@ public class Note : MonoBehaviour
 
         transform.position += Vector3.back * noteSpeed * Time.deltaTime;
 
-        if (transform.position.z < -8)
+        if (transform.position.z < -8.5)
         {
             DestroyNote();
             InGameUI.Instance.SetInGameText("Miss");
@@ -54,7 +54,7 @@ public class Note : MonoBehaviour
         {
             InGameUI.Instance.SetInGameText("Bed");
         }
-        else if (distanceFromKey < 0.35f)
+        else if (distanceFromKey < 0.5f)
         {
             InGameUI.Instance.SetInGameText("Perfect");
         }

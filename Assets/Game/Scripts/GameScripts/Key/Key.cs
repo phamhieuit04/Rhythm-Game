@@ -2,43 +2,38 @@ using UnityEngine;
 
 public class Key : MonoBehaviour
 {
-    [SerializeField] private KeyInput.KeyNote keyNote;
+    [SerializeField] private KeyManager.KeyNote keyNote;
 
     private void Start()
     {
         KeyInput.Instance.OnNotePerform += KeyInput_OnNotePerform;
-        KeyInput.Instance.OnNoteCancel += KeyInput_OnNoteCancel;
     }
 
-    private void KeyInput_OnNoteCancel(object sender, KeyInput.NoteEventArgs e)
+    private void Update()
     {
-        if (e.key == keyNote)
-        {
-            transform.position = new Vector3(transform.position.x, -0.25f, transform.position.z);
-        }
+        Debug.DrawLine(transform.position - transform.forward * 1.5f, transform.forward * KeyManager.Instance.GetKeyCheckDistance());
     }
 
     private void KeyInput_OnNotePerform(object sender, KeyInput.NoteEventArgs e)
     {
-        if (e.key == keyNote)
-        {
-            CheckNote();
-            transform.position = new Vector3(transform.position.x, -0.3f, transform.position.z);
-        }
+        CheckNote();
     }
 
     private void CheckNote()
     {
-        float distanceFromNote = 10f;
-        if (Physics.Raycast(new Vector3(transform.position.x, transform.position.y, transform.position.z - 1.5f), transform.forward, out RaycastHit hit, 3f))
+        if (Physics.Raycast(transform.position - transform.forward * 1.5f, transform.forward, out RaycastHit hit, KeyManager.Instance.GetKeyCheckDistance()))
         {
             if (hit.transform.GetComponentInParent<Note>())
             {
                 Note note = hit.transform.GetComponentInParent<Note>();
-                distanceFromNote = Vector3.Distance(note.transform.localPosition, transform.position);
                 note.DestroyNote();
             }
         }
+    }
+
+    public KeyManager.KeyNote GetKeyNote()
+    {
+        return keyNote;
     }
 
 }
