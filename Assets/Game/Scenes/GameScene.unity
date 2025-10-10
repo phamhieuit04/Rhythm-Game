@@ -291,8 +291,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NoteManager
   notePrefab: {fileID: 4809287376798471361, guid: c7ea918068455e64eb4e765dd7b4a53e, type: 3}
-  randomNote: 1
   audioSource: {fileID: 1896325534}
+  noteSpeed: 5
+  audioStartDelay: 5
 --- !u!1 &451382173
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,15 +1,13 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class NoteManager : MonoBehaviour
 {
     [SerializeField] private GameObject notePrefab;
-    [SerializeField] private bool randomNote = false;
 
     [SerializeField] private AudioSource audioSource;
 
     private List<GameObject> notePool = new List<GameObject>();
-    private float noteReleaseTimer = 0f;
 
     private Vector3 dLaneSpawnPosition = new Vector3(-1.5f, 0, 16);
     private Vector3 fLaneSpawnPosition = new Vector3(-0.5f, 0, 16);
@@ -17,11 +15,22 @@ public class NoteManager : MonoBehaviour
     private Vector3 kLaneSpawnPosition = new Vector3(1.5f, 0, 16);
 
     private RootNote beatRoot;
+    private List<Beat> beats;
+
+
+    [SerializeField] private float noteSpeed = 3f;
+    [SerializeField] private double audioStartDelay = 10f;
+
+    private double songStartDspTime;
+    private double travelTime;
+    private int nextNoteIndex = 0;
+
+
+
 
     private void Start()
     {
-        audioSource.PlayScheduled(AudioSettings.dspTime + 5);
-        for (int i = 0; i < 40; i++)
+        for (int i = 0; i < 30; i++)
         {
             GameObject note = Instantiate(notePrefab, transform);
             note.SetActive(false);
@@ -30,53 +39,44 @@ public class NoteManager : MonoBehaviour
 
 
 
-        TextAsset jsonFile = Resources.Load<TextAsset>("Ttls");
+        TextAsset jsonFile = Resources.Load<TextAsset>("TtlsH");
         Debug.Log(jsonFile.text);
         beatRoot = JsonUtility.FromJson<RootNote>(jsonFile.text);
-        foreach (Beat beat in beatRoot.beats)
-        {
-            Debug.Log(beat.time);
-        }
+        beats = beatRoot.beats;
 
+
+
+        float distance = Vector3.Distance(dLaneSpawnPosition, new Vector3(dLaneSpawnPosition.x, dLaneSpawnPosition.y, -7.5f));
+        travelTime = distance / noteSpeed;
+
+        songStartDspTime = AudioSettings.dspTime + audioStartDelay;
+        audioSource.PlayScheduled(songStartDspTime);
     }
 
     private void Update()
     {
-        if (randomNote)
+        double songPosition = AudioSettings.dspTime - songStartDspTime;
+
+        if (nextNoteIndex < beats.Count &&
+            songPosition >= beats[nextNoteIndex].time - travelTime)
         {
-            noteReleaseTimer -= Time.deltaTime;
-            if (noteReleaseTimer < 0)
+            switch (beats[nextNoteIndex].lane)
             {
-                RandomNotes();
-                noteReleaseTimer = 0.5f;
+                case 1:
+                    GetNotePool().GetComponent<Note>().SpawnNote(dLaneSpawnPosition, songStartDspTime + beats[nextNoteIndex].time, noteSpeed);
+                    break;
+                case 2:
+                    GetNotePool().GetComponent<Note>().SpawnNote(fLaneSpawnPosition, songStartDspTime + beats[nextNoteIndex].time, noteSpeed);
+                    break;
+                case 3:
+                    GetNotePool().GetComponent<Note>().SpawnNote(jLaneSpawnPosition, songStartDspTime + beats[nextNoteIndex].time, noteSpeed);
+                    break;
+                case 4:
+                    GetNotePool().GetComponent<Note>().SpawnNote(kLaneSpawnPosition, songStartDspTime + beats[nextNoteIndex].time, noteSpeed);
+                    break;
             }
+            nextNoteIndex++;
         }
-    }
-
-    private void RandomNotes()
-    {
-        int lane = Random.Range(1, 5);
-        switch (lane)
-        {
-            case 1:
-                SetupNote(GetNotePool(), dLaneSpawnPosition);
-                break;
-            case 2:
-                SetupNote(GetNotePool(), fLaneSpawnPosition);
-                break;
-            case 3:
-                SetupNote(GetNotePool(), jLaneSpawnPosition);
-                break;
-            case 4:
-                SetupNote(GetNotePool(), kLaneSpawnPosition);
-                break;
-        }
-    }
-
-    public void SetupNote(GameObject note, Vector3 lane)
-    {
-        note.SetActive(true);
-        note.transform.position = lane;
     }
 
     public GameObject GetNotePool()

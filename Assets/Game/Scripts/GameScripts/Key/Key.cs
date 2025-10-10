@@ -38,18 +38,6 @@ public class Key : MonoBehaviour
                 distanceFromNote = Vector3.Distance(note.transform.localPosition, transform.position);
                 note.DestroyNote();
             }
-            if(hit.transform.position.z < transform.position.z)
-            {
-                InGameUI.Instance.SetInGameText("Bed");
-            }
-            else if(distanceFromNote < 0.35f)
-            {
-                InGameUI.Instance.SetInGameText("Perfect");
-            }
-            else
-            {
-                InGameUI.Instance.SetInGameText("Good");
-            }
         }
     }
 
