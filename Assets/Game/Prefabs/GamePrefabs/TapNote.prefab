@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5904360930526679883}
   - component: {fileID: 7141373111670206588}
   m_Layer: 0
-  m_Name: Note
+  m_Name: TapNote
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

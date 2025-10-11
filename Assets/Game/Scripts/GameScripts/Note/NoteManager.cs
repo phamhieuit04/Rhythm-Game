@@ -5,10 +5,11 @@ public class NoteManager : MonoBehaviour
 {
     public static NoteManager Instance { get; private set; }
 
-    [Header("Property")]
-    [SerializeField] private GameObject notePrefab;
+    [SerializeField] private GameObject tapNotePrefab;
+    [SerializeField] private GameObject holdNotePrefab;
 
-    private List<GameObject> notePool = new List<GameObject>();
+    private List<GameObject> tapNotePool = new List<GameObject>();
+    private List<GameObject> holdNotePool = new List<GameObject>();
 
     private Vector3 dLaneSpawnPosition = new Vector3(-1.5f, 0, 16);
     private Vector3 fLaneSpawnPosition = new Vector3(-0.5f, 0, 16);
@@ -21,6 +22,7 @@ public class NoteManager : MonoBehaviour
 
     private double travelTime;
     private int nextNoteIndex = 0;
+    private Vector3 laneSpawn;
 
     private void Awake()
     {
@@ -31,10 +33,17 @@ public class NoteManager : MonoBehaviour
     {
         for (int i = 0; i < 30; i++)
         {
-            GameObject note = Instantiate(notePrefab, transform);
+            GameObject note = Instantiate(tapNotePrefab, transform);
             note.SetActive(false);
-            notePool.Add(note);
+            tapNotePool.Add(note);
         }
+        for (int i = 0; i < 5; i++)
+        {
+            GameObject note = Instantiate(holdNotePrefab, transform);
+            note.SetActive(false);
+            holdNotePool.Add(note);
+        }
+
         GameManager.Instance.OnGameStart += GameManager_OnGameStart;
     }
 
@@ -60,39 +69,66 @@ public class NoteManager : MonoBehaviour
         if (nextNoteIndex < beats.Count &&
             songPosition >= beats[nextNoteIndex].time - travelTime)
         {
-            switch (beats[nextNoteIndex].lane)
+            Beat beat = beats[nextNoteIndex];
+            switch (beat.lane)
             {
                 case 1:
-                    GetNotePool().GetComponent<Note>().SpawnNote(dLaneSpawnPosition, GameManager.Instance.GetSongStartDsp() + beats[nextNoteIndex].time, noteSpeed);
+                    laneSpawn = dLaneSpawnPosition;
                     break;
                 case 2:
-                    GetNotePool().GetComponent<Note>().SpawnNote(fLaneSpawnPosition, GameManager.Instance.GetSongStartDsp() + beats[nextNoteIndex].time, noteSpeed);
+                    laneSpawn = fLaneSpawnPosition;
                     break;
                 case 3:
-                    GetNotePool().GetComponent<Note>().SpawnNote(jLaneSpawnPosition, GameManager.Instance.GetSongStartDsp() + beats[nextNoteIndex].time, noteSpeed);
+                    laneSpawn = jLaneSpawnPosition;
                     break;
                 case 4:
-                    GetNotePool().GetComponent<Note>().SpawnNote(kLaneSpawnPosition, GameManager.Instance.GetSongStartDsp() + beats[nextNoteIndex].time, noteSpeed);
+                    laneSpawn = kLaneSpawnPosition;
                     break;
+            }
+            if(beat.type == "hold")
+            {
+                Debug.Log("Lane: " + beat.lane + " " + beat.duration);
+                double duration = beat.duration > 0.25f ? beat.duration - 0.2f : beat.duration;
+                GetHoldNotePool().GetComponent<HoldNote>().SpawnNote(laneSpawn, GameManager.Instance.GetSongStartDsp() + beat.time, noteSpeed, duration);
+            }
+            else
+            {
+                GetTapNotePool().GetComponent<TapNote>().SpawnNote(laneSpawn, GameManager.Instance.GetSongStartDsp() + beat.time, noteSpeed);
             }
             nextNoteIndex++;
         }
     }
 
-    public GameObject GetNotePool()
+    public GameObject GetHoldNotePool()
     {
-        for (int i = 0; i < notePool.Count; i++)
+        for (int i = 0; i < holdNotePool.Count; i++)
         {
-            if (!notePool[i].activeInHierarchy)
+            if (!holdNotePool[i].activeInHierarchy)
             {
-                return notePool[i];
+                return holdNotePool[i];
             }
         }
-        GameObject newNote = Instantiate(notePrefab, transform);
+        GameObject newNote = Instantiate(holdNotePrefab, transform);
         newNote.SetActive(false);
-        notePool.Add(newNote);
+        holdNotePool.Add(newNote);
         return newNote;
     }
+
+    public GameObject GetTapNotePool()
+    {
+        for (int i = 0; i < tapNotePool.Count; i++)
+        {
+            if (!tapNotePool[i].activeInHierarchy)
+            {
+                return tapNotePool[i];
+            }
+        }
+        GameObject newNote = Instantiate(tapNotePrefab, transform);
+        newNote.SetActive(false);
+        tapNotePool.Add(newNote);
+        return newNote;
+    }
+
 
     public void SetNoteSpeed(float speed)
     {

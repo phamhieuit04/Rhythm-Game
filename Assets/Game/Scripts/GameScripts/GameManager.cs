@@ -10,8 +10,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Debug File")]
     [SerializeField] private TextAsset jsonFile;
-    [SerializeField] private AudioResource audioResource;
+    [SerializeField] private AudioClip audioClip;
     [SerializeField] private AudioSource audioSource;
+    
 
     [SerializeField] private double audioStartDelay = 10f;
 
@@ -49,9 +50,10 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         songStartDspTime = AudioSettings.dspTime + audioStartDelay;
+        Debug.Log(jsonFile.text);
         beatRoot = JsonUtility.FromJson<RootNote>(jsonFile.text);
 
-        audioSource.resource = audioResource;
+        audioSource.clip = audioClip;
         audioSource.PlayScheduled(songStartDspTime);
 
         switch (beatRoot.difficulty)
@@ -94,6 +96,7 @@ public class Beat
     public int lane;
     public string type;
     public double energy;
+    public double duration;
 }
 [System.Serializable]
 public class RootNote

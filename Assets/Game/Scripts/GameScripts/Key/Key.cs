@@ -11,7 +11,9 @@ public class Key : MonoBehaviour
         startPoint = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1.5f);
         endPoint = transform.position;
         KeyInput.Instance.OnNotePerform += KeyInput_OnNotePerform;
+        KeyInput.Instance.OnNoteCancel += KeyInput_OnNoteCancel;
     }
+
 
     private void Update()
     {
@@ -22,18 +24,46 @@ public class Key : MonoBehaviour
     {
         if (e.key == keyNote)
         {
-            CheckNote();
+            CheckNotePerform();
         }
     }
 
-    private void CheckNote()
+    private void KeyInput_OnNoteCancel(object sender, KeyInput.NoteEventArgs e)
+    {
+        if(e.key == keyNote)
+        {
+            CheckNoteCancel();
+        }
+    }
+
+    private void CheckNotePerform()
     {
         if (Physics.Raycast(startPoint, (endPoint - startPoint).normalized, out RaycastHit hit, KeyManager.Instance.GetKeyCheckDistance()))
         {
-            if (hit.transform.GetComponentInParent<Note>())
+            // On Key Perform
+            if (hit.transform.GetComponentInParent<TapNote>())
             {
-                Note note = hit.transform.GetComponentInParent<Note>();
+                TapNote note = hit.transform.GetComponentInParent<TapNote>();
                 note.DestroyNote();
+            } else if (hit.transform.GetComponentInParent<HoldNote>())
+            {
+                HoldNote note = hit.transform.GetComponentInParent<HoldNote>();
+                note.DestroyNote(true);
+            }
+
+        }
+    }
+
+    private void CheckNoteCancel()
+    {
+        if (Physics.Raycast(startPoint, (endPoint - startPoint).normalized, out RaycastHit hit, 23.5f))
+        {
+            // On Key Cancel
+            if (hit.transform.GetComponentInParent<HoldNote>())
+            {
+                Debug.Log("Hold Note Release");
+                HoldNote note = hit.transform.GetComponentInParent<HoldNote>();
+                note.DestroyNote(false);
             }
         }
     }

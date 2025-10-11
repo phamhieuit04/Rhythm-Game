@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Note : MonoBehaviour
+public class TapNote : MonoBehaviour
 {
     [SerializeField] private float noteSpeed = 5f;
 
@@ -12,15 +12,6 @@ public class Note : MonoBehaviour
 
     void Update()
     {
-        //dsp = AudioSettings.dspTime;
-
-        //if (dsp < spawnDspTime)
-        //    return;
-
-        //float t = Mathf.InverseLerp((float)spawnDspTime, (float)hitDspTime, (float)dsp);
-
-        //transform.position = Vector3.Lerp(spawnPos, targetPos, t);
-
         transform.position += Vector3.back * noteSpeed * Time.deltaTime;
 
         if (transform.position.z < -8.5)
