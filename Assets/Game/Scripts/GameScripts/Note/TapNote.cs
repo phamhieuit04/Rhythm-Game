@@ -10,6 +10,8 @@ public class TapNote : MonoBehaviour
     public double hitDspTime;
     public double dsp;
 
+    private bool isSlowDown = false;
+
     void Update()
     {
         transform.position += Vector3.back * noteSpeed * Time.deltaTime;
@@ -19,7 +21,14 @@ public class TapNote : MonoBehaviour
             DestroyNote();
             InGameUI.Instance.SetInGameText("Miss");
         }
+        if(transform.position.z < -7.42f && !isSlowDown)
+        {
+            noteSpeed = noteSpeed / 3;
+            isSlowDown = true;
+        }
     }
+
+
 
 
     public void SpawnNote(Vector3 lanePos, double hitTime, float speed)
@@ -28,6 +37,7 @@ public class TapNote : MonoBehaviour
         targetPos = new Vector3(spawnPos.x, spawnPos.y, -7.5f);
         hitDspTime = hitTime;
         noteSpeed = speed;
+        isSlowDown = false;
 
         float distance = Vector3.Distance(spawnPos, targetPos);
         double travelTime = distance / noteSpeed;
@@ -40,19 +50,7 @@ public class TapNote : MonoBehaviour
 
     public void DestroyNote()
     {
-        float distanceFromKey = transform.position.z - -7.5f;
-        if (transform.position.z <= -7.77f)
-        {
-            InGameUI.Instance.SetInGameText("Bed");
-        }
-        else if (distanceFromKey < 0.5f)
-        {
-            InGameUI.Instance.SetInGameText("Perfect");
-        }
-        else
-        {
-            InGameUI.Instance.SetInGameText("Good");
-        }
+        GameManager.Instance.SetJudment(transform.position);
         gameObject.SetActive(false);
     }
 }

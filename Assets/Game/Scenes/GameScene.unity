@@ -1561,16 +1561,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66431f8fecc3b6147b6ca59d7575ea51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  jsonFile: {fileID: 4900000, guid: 720e95ed6b8cd3d4cbe48f7a4380f722, type: 3}
-  audioClip: {fileID: 8300000, guid: 672442e143143054caa801d1a39ad84a, type: 3}
+  jsonFile: {fileID: 4900000, guid: 3fdcb6f3209adce41a44443523f98d75, type: 3}
+  audioClip: {fileID: 8300000, guid: 4f6e6fb4115a84d4483dd4e4156d9d9d, type: 3}
   audioSource: {fileID: 1896325534}
   audioStartDelay: 10
-  hardNoteSpeed: 5
+  hardNoteSpeed: 15
   normalNoteSpeed: 10
   easyNoteSpeed: 5
   hardKeyDistance: 6
   normalKeyDistance: 5
   easyKeyDistance: 4
+  keyLineZ: -7.5
+  behindKeyOffset: 0.2
+  frontKeyOffset: 0.5
 --- !u!1 &1278265435
 GameObject:
   m_ObjectHideFlags: 0
@@ -2510,6 +2513,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 600056663}
   - {fileID: 69438880}
+  - {fileID: 262716075}
   - {fileID: 1380487692}
   - {fileID: 95363024}
   - {fileID: 609269434}
@@ -2519,4 +2523,3 @@ SceneRoots:
   - {fileID: 719646181}
   - {fileID: 246919507}
   - {fileID: 1260625389}
-  - {fileID: 262716075}

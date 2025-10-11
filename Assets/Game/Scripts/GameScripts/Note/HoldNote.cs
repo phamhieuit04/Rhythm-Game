@@ -24,15 +24,15 @@ public class HoldNote : MonoBehaviour
     {
         SetupLine(startNote, endNote);
         transform.position += Vector3.back * noteSpeed * Time.deltaTime;
-        if (isHolding )
+        if (isHolding)
         {
             startNote.localPosition += Vector3.forward * noteSpeed * Time.deltaTime;
         }
 
-        if (endNote.transform.position.z < -8.5)
+        if (endNote.position.z < -8.5f)
         {
-            DestroyNote(false);
             InGameUI.Instance.SetInGameText("Miss");
+            gameObject.SetActive(false);
         }
     }
 
@@ -73,38 +73,14 @@ public class HoldNote : MonoBehaviour
     {
         if(isStartNote)
         {
-            float distanceFromKey = startNote.position.z - -7.5f;
-            if (startNote.position.z <= -7.77f)
-            {
-                InGameUI.Instance.SetInGameText("Bed");
-            }
-            else if (distanceFromKey < 0.5f)
-            {
-                InGameUI.Instance.SetInGameText("Perfect");
-            }
-            else
-            {
-                InGameUI.Instance.SetInGameText("Good");
-            }
+            GameManager.Instance.SetJudment(startNote.position);
             isHolding = true;
             startNote.gameObject.SetActive(false);
         }
         else
         {
             if (isHolding == false) return;
-            float distanceFromKey = endNote.position.z - -7.5f;
-            if (endNote.position.z <= -7.77f)
-            {
-                InGameUI.Instance.SetInGameText("Bed");
-            }
-            else if (distanceFromKey < 0.5f)
-            {
-                InGameUI.Instance.SetInGameText("Perfect");
-            }
-            else
-            {
-                InGameUI.Instance.SetInGameText("Good");
-            }
+            GameManager.Instance.SetJudment(endNote.position);
             isHolding = false;
             gameObject.SetActive(false);
         }

@@ -27,6 +27,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float normalKeyDistance = 5f;
     [SerializeField] private float easyKeyDistance = 4f;
 
+    [Header("KeyLine")]
+    [SerializeField] private float keyLineZ = -7.5f;
+    [SerializeField] private float behindKeyOffset = 0.2f;
+    [SerializeField] private float frontKeyOffset = 0.5f;
+
     private double songStartDspTime;
     private bool isPlaying = false;
     private RootNote beatRoot;
@@ -77,6 +82,23 @@ public class GameManager : MonoBehaviour
             beats = beatRoot.beats,
         });
         isPlaying = true;
+    }
+
+    public void SetJudment(Vector3 notePosition)
+    {
+        float distanceFromKey = notePosition.z - keyLineZ;
+        if (notePosition.z <= keyLineZ - behindKeyOffset)
+        {
+            InGameUI.Instance.SetInGameText("Bed");
+        }
+        else if (distanceFromKey < frontKeyOffset)
+        {
+            InGameUI.Instance.SetInGameText("Perfect");
+        }
+        else
+        {
+            InGameUI.Instance.SetInGameText("Good");
+        }
     }
 
     public double GetSongStartDsp()
