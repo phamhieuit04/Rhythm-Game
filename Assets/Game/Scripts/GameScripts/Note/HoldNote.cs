@@ -14,6 +14,7 @@ public class HoldNote : MonoBehaviour
     public double hitDspTime;
     public double dsp;
     private bool isHolding = false;
+    private bool isOverKeyLine = false;
 
     private void Awake()
     {
@@ -25,13 +26,16 @@ public class HoldNote : MonoBehaviour
     {
         SetupLine(startNote, endNote);
         transform.position += Vector3.back * noteSpeed * Time.deltaTime;
-        if (isHolding)
+        if(startNote.position.z <= -7.45f)
         {
-            //startNote.localPosition += Vector3.forward * noteSpeed * Time.deltaTime;
+            isOverKeyLine=true;
+        }
+        if (isHolding && isOverKeyLine)
+        {
             startNote.localPosition =  transform.InverseTransformPoint(new Vector3(startNote.position.x, 0, -7.45f));
         }
 
-        if (endNote.position.z < -8.5f)
+        if (endNote.position.z < -8f)
         {
             InGameUI.Instance.SetInGameText("Miss");
             gameObject.SetActive(false);
@@ -74,6 +78,10 @@ public class HoldNote : MonoBehaviour
     {
         if(isStartNote)
         {
+            if(startNote.position.z <= -7.45)
+            {
+                isOverKeyLine = true;
+            }
             GameManager.Instance.SetJudment(startNote.position);
             isHolding = true;
             startNote.gameObject.SetActive(false);

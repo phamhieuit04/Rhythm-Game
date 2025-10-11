@@ -9,11 +9,18 @@ public class InGameUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI judmentText;
     [SerializeField] private TextMeshProUGUI comboText;
 
+    private int maxCombo = 0;
+
     int comboNumber = 0;
 
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void Start()
+    {
+        maxCombo = 0;
     }
 
 
@@ -25,8 +32,14 @@ public class InGameUI : MonoBehaviour
         }
         else
         {
+            if(comboNumber > maxCombo)
+            {
+                maxCombo = comboNumber;
+                RuntimeUI.Instance.SetMaxCombo(comboNumber);
+            }
             comboNumber = 1;
         }
+
         if (comboNumber > 1)
         {
             comboText.text = "x" + comboNumber.ToString();
@@ -35,6 +48,7 @@ public class InGameUI : MonoBehaviour
         {
             comboText.text = "";
         }
+        RuntimeUI.Instance.SetRunTimeText(text);
         judmentText.text = text;
         StartCoroutine(OnChangeAnim());
     }

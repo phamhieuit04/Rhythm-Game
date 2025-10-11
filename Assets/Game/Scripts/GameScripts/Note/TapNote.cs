@@ -16,14 +16,14 @@ public class TapNote : MonoBehaviour
     {
         transform.position += Vector3.back * noteSpeed * Time.deltaTime;
 
-        if (transform.position.z < -8.5)
+        if (transform.position.z <= -7.9)
         {
             DestroyNote();
             InGameUI.Instance.SetInGameText("Miss");
         }
         if(transform.position.z < -7.45f && !isSlowDown)
         {
-            noteSpeed = noteSpeed / 2;
+            noteSpeed = noteSpeed / 2.5f;
             isSlowDown = true;
         }
     }

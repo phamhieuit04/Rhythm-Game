@@ -50,6 +50,19 @@ public class NoteManager : MonoBehaviour
     private void GameManager_OnGameStart(object sender, GameManager.OnGameStartEventArgs e)
     {
         beats = e.beats;
+        int maxScore = 0;
+        foreach (Beat b in beats)
+        {
+            if(b.type == "tap")
+            {
+                maxScore += 3;
+            }
+            else
+            {
+                maxScore += 6;
+            }
+        }
+        RuntimeUI.Instance.SetMaxScore(maxScore);
         float distance = Vector3.Distance(dLaneSpawnPosition, new Vector3(dLaneSpawnPosition.x, dLaneSpawnPosition.y, -7.5f));
         travelTime = distance / noteSpeed;
     }
@@ -87,7 +100,6 @@ public class NoteManager : MonoBehaviour
             }
             if(beat.type == "hold")
             {
-                Debug.Log("Lane: " + beat.lane + " " + beat.duration);
                 double duration = beat.duration > 0.25f ? beat.duration - 0.2f : beat.duration;
                 GetHoldNotePool().GetComponent<HoldNote>().SpawnNote(laneSpawn, GameManager.Instance.GetSongStartDsp() + beat.time, noteSpeed, duration);
             }
