@@ -4,8 +4,6 @@ public class PlayerInteraction : MonoBehaviour
 {
     public static PlayerInteraction Instance { get; private set; }
 
-    [SerializeField] private GameObject interactUI;
-
     private IInteract interactableObject;
 
     private void Awake()
@@ -15,8 +13,6 @@ public class PlayerInteraction : MonoBehaviour
 
     void Start()
     {
-        interactUI.SetActive(false);
-
         GameInput.Instance.OnInteract += GameInput_OnInteract;
     }
 
@@ -43,7 +39,8 @@ public class PlayerInteraction : MonoBehaviour
                 break;
             }
         }
-        interactUI.SetActive(display);
+
+        InteractUI.Instance.SetDisplay(display);
     }
 
     private void GameInput_OnInteract(object sender, System.EventArgs e)
@@ -54,23 +51,25 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 
-    public void SetVisual(Collider collision, bool isNear)
-    {
-        IInteract interacableObject = collision.transform.GetComponentInParent<IInteract>();
-        if (interacableObject != null)
-        {
-            interacableObject.ChangeVisual(isNear);
-            interacableObject.CanInteract = isNear;
-        }
-    }
-
     private void OnTriggerEnter(Collider collision)
     {
-        SetVisual(collision, true);
+        SetInteractableObjectOutlineVisual(collision, true);
     }
 
     private void OnTriggerExit(Collider collision)
     {
-        SetVisual(collision, false);
+        SetInteractableObjectOutlineVisual(collision, false);
+    }
+
+    private void SetInteractableObjectOutlineVisual(Collider collision, bool isNear)
+    {
+        IInteract interactableObject = collision.transform.GetComponentInParent<IInteract>();
+        if (interactableObject != null)
+        {
+            interactableObject.CanInteract = isNear;
+
+            OutlineVisual.Instance.SetVisualObject(collision.gameObject);
+            OutlineVisual.Instance.SetVisual(isNear);
+        }
     }
 }
