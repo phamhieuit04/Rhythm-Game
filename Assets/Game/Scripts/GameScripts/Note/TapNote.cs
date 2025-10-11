@@ -21,9 +21,9 @@ public class TapNote : MonoBehaviour
             DestroyNote();
             InGameUI.Instance.SetInGameText("Miss");
         }
-        if(transform.position.z < -7.42f && !isSlowDown)
+        if(transform.position.z < -7.45f && !isSlowDown)
         {
-            noteSpeed = noteSpeed / 3;
+            noteSpeed = noteSpeed / 2;
             isSlowDown = true;
         }
     }

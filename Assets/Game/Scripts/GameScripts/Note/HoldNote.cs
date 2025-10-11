@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HoldNote : MonoBehaviour
@@ -26,7 +27,8 @@ public class HoldNote : MonoBehaviour
         transform.position += Vector3.back * noteSpeed * Time.deltaTime;
         if (isHolding)
         {
-            startNote.localPosition += Vector3.forward * noteSpeed * Time.deltaTime;
+            //startNote.localPosition += Vector3.forward * noteSpeed * Time.deltaTime;
+            startNote.localPosition =  transform.InverseTransformPoint(new Vector3(startNote.position.x, 0, -7.45f));
         }
 
         if (endNote.position.z < -8.5f)
@@ -57,7 +59,6 @@ public class HoldNote : MonoBehaviour
         startNote.transform.localPosition = Vector3.zero;
         startNote.transform.position = lanePos;
 
-        Debug.Log(duration);
         Vector3 endNotePosition = new Vector3(startNote.transform.localPosition.x, 0.01f, startNote.transform.localPosition.z + ((float)duration * speed));
         endNote.transform.localPosition = endNotePosition;
 
@@ -80,7 +81,7 @@ public class HoldNote : MonoBehaviour
         else
         {
             if (isHolding == false) return;
-            GameManager.Instance.SetJudment(endNote.position);
+            GameManager.Instance.SetJudment(new Vector3(endNote.position.x, endNote.position.y, endNote.position.z + 0.1f));
             isHolding = false;
             gameObject.SetActive(false);
         }

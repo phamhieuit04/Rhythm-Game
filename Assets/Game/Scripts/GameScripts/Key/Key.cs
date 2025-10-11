@@ -8,7 +8,7 @@ public class Key : MonoBehaviour
 
     private void Start()
     {
-        startPoint = new Vector3(transform.position.x, transform.position.y, transform.position.z - 1.5f);
+        startPoint = new Vector3(transform.position.x, transform.position.y, transform.position.z - 25f);
         endPoint = transform.position;
         KeyInput.Instance.OnNotePerform += KeyInput_OnNotePerform;
         KeyInput.Instance.OnNoteCancel += KeyInput_OnNoteCancel;
@@ -17,7 +17,7 @@ public class Key : MonoBehaviour
 
     private void Update()
     {
-        Debug.DrawLine(startPoint, new Vector3(startPoint.x, startPoint.y, startPoint.z + KeyManager.Instance.GetKeyCheckDistance()), Color.red);
+        Debug.DrawLine(startPoint, new Vector3(startPoint.x, startPoint.y, startPoint.z + KeyManager.Instance.GetKeyCheckDistance() + 25), Color.red);
     }
 
     private void KeyInput_OnNotePerform(object sender, KeyInput.NoteEventArgs e)
@@ -38,7 +38,7 @@ public class Key : MonoBehaviour
 
     private void CheckNotePerform()
     {
-        if (Physics.Raycast(startPoint, (endPoint - startPoint).normalized, out RaycastHit hit, KeyManager.Instance.GetKeyCheckDistance()))
+        if (Physics.Raycast(startPoint, (endPoint - startPoint).normalized, out RaycastHit hit, KeyManager.Instance.GetKeyCheckDistance() + 25))
         {
             // On Key Perform
             if (hit.transform.GetComponentInParent<TapNote>())
@@ -56,7 +56,7 @@ public class Key : MonoBehaviour
 
     private void CheckNoteCancel()
     {
-        if (Physics.Raycast(startPoint, (endPoint - startPoint).normalized, out RaycastHit hit, 23.5f))
+        if (Physics.Raycast(startPoint, (endPoint - startPoint).normalized, out RaycastHit hit, 23.5f + 25))
         {
             // On Key Cancel
             if (hit.transform.GetComponentInParent<HoldNote>())

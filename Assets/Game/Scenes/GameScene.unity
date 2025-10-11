@@ -274,8 +274,8 @@ Transform:
   m_GameObject: {fileID: 77777622}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.57}
-  m_LocalScale: {x: 0.8, y: 0.01, z: 0.7}
+  m_LocalPosition: {x: 0, y: 0, z: -0.80600005}
+  m_LocalScale: {x: 0.8, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1961772742}
@@ -752,7 +752,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 42
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -778,13 +778,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 600056660}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.2334017, y: -0, z: -0, w: 0.97238046}
-  m_LocalPosition: {x: 0, y: 2.8, z: -10.13}
+  m_LocalRotation: {x: 0.19038107, y: -0, z: -0, w: 0.9817103}
+  m_LocalPosition: {x: 0, y: 3.65, z: -12.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 26.995, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 21.95, y: 0, z: 0}
 --- !u!114 &600056664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1239,8 +1239,8 @@ Transform:
   m_GameObject: {fileID: 1086226763}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.57}
-  m_LocalScale: {x: 0.8, y: 0.01, z: 0.7}
+  m_LocalPosition: {x: 0, y: 0, z: -0.80600005}
+  m_LocalScale: {x: 0.8, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2081092775}
@@ -1443,8 +1443,8 @@ Transform:
   m_GameObject: {fileID: 1190937541}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.57}
-  m_LocalScale: {x: 0.8, y: 0.01, z: 0.7}
+  m_LocalPosition: {x: 0, y: 0, z: -0.806}
+  m_LocalScale: {x: 0.8, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 884073867}
@@ -1564,15 +1564,15 @@ MonoBehaviour:
   jsonFile: {fileID: 4900000, guid: 3fdcb6f3209adce41a44443523f98d75, type: 3}
   audioClip: {fileID: 8300000, guid: 4f6e6fb4115a84d4483dd4e4156d9d9d, type: 3}
   audioSource: {fileID: 1896325534}
-  audioStartDelay: 10
+  audioStartDelay: 5
   hardNoteSpeed: 15
   normalNoteSpeed: 10
   easyNoteSpeed: 5
-  hardKeyDistance: 6
-  normalKeyDistance: 5
-  easyKeyDistance: 4
+  hardKeyDistance: 5
+  normalKeyDistance: 4
+  easyKeyDistance: 3
   keyLineZ: -7.5
-  behindKeyOffset: 0.2
+  behindKeyOffset: 0.3
   frontKeyOffset: 0.5
 --- !u!1 &1278265435
 GameObject:
@@ -2020,8 +2020,8 @@ Transform:
   m_GameObject: {fileID: 1439999761}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.57}
-  m_LocalScale: {x: 0.8, y: 0.01, z: 0.7}
+  m_LocalPosition: {x: 0, y: 0, z: -0.80600005}
+  m_LocalScale: {x: 0.8, y: 0.01, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 757764256}
