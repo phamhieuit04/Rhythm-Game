@@ -100,7 +100,7 @@ public class NoteManager : MonoBehaviour
             }
             if(beat.type == "hold")
             {
-                double duration = beat.duration > 0.25f ? beat.duration - 0.2f : beat.duration;
+                double duration = beat.duration;
                 GetHoldNotePool().GetComponent<HoldNote>().SpawnNote(laneSpawn, GameManager.Instance.GetSongStartDsp() + beat.time, noteSpeed, duration);
             }
             else
