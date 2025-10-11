@@ -4,6 +4,10 @@ public class PlayerInteraction : MonoBehaviour
 {
     public static PlayerInteraction Instance { get; private set; }
 
+    [SerializeField] private GameObject interactUI;
+
+    private IInteract interactableObject;
+
     private void Awake()
     {
         Instance = this;
@@ -11,30 +15,42 @@ public class PlayerInteraction : MonoBehaviour
 
     void Start()
     {
+        interactUI.SetActive(false);
+
         GameInput.Instance.OnInteract += GameInput_OnInteract;
     }
 
     void Update()
     {
+        HandleInteracts();
+    }
 
+    public void HandleInteracts()
+    {
+        Vector3 centerScreen = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0f);
+        Ray ray = Camera.main.ScreenPointToRay(centerScreen);
+
+        RaycastHit[] hits = Physics.RaycastAll(ray);
+        bool display = false;
+
+        foreach (RaycastHit hit in hits)
+        {
+            IInteract interactableObject = hit.transform.GetComponentInParent<IInteract>();
+            if (!hit.transform.tag.Equals("Player") && interactableObject != null && interactableObject.CanInteract)
+            {
+                this.interactableObject = interactableObject;
+                display = true;
+                break;
+            }
+        }
+        interactUI.SetActive(display);
     }
 
     private void GameInput_OnInteract(object sender, System.EventArgs e)
     {
-        Vector3 centerScreen = new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 0f);
-        Ray ray = Camera.main.ScreenPointToRay(centerScreen);
-        RaycastHit[] hits = Physics.RaycastAll(ray);
-
-        foreach (RaycastHit hit in hits)
+        if (interactableObject != null)
         {
-            IInteract interacableObject = hit.transform.GetComponentInParent<IInteract>();
-            if (!hit.transform.tag.Equals("Player") && interacableObject != null)
-            {
-                if (interacableObject.CanInteract)
-                {
-                    hit.transform.GetComponentInParent<IInteract>().Interact();
-                }
-            }
+            interactableObject.Interact();
         }
     }
 
