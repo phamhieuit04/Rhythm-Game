@@ -67,6 +67,7 @@ public class HoldNote : MonoBehaviour
         endNote.transform.localPosition = endNotePosition;
 
         isHolding = false;
+        isOverKeyLine = false;
         gameObject.SetActive(true);
         foreach(Transform chil in transform)
         {

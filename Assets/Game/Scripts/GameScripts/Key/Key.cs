@@ -61,7 +61,6 @@ public class Key : MonoBehaviour
             // On Key Cancel
             if (hit.transform.GetComponentInParent<HoldNote>())
             {
-                Debug.Log("Hold Note Release");
                 HoldNote note = hit.transform.GetComponentInParent<HoldNote>();
                 note.DestroyNote(false);
             }
